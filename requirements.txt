@@ -1,0 +1,7 @@
+flask==3.0.2
+requests==2.31.0
+yt-dlp[default]>=2026.1.1
+imageio-ffmpeg>=0.5.1
+pytubefix>=8.0.0
+you-get>=0.4.1700
+gallery-dl>=1.28.0
