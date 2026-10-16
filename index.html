@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIVINE IDM - fast multi-engine download manager</title>
+<meta name="description" content="DIVINE IDM downloads videos, music, images and files at full speed. Free, open source, runs on your own computer.">
+<style>
+  :root { --a: #6366f1; --b: #d946ef; }
+  * { box-sizing: border-box; } body { margin: 0; font-family: Inter, system-ui, "Segoe UI", sans-serif; color: #e5e7f5; line-height: 1.6;
+    background: radial-gradient(900px 500px at 85% -10%, rgba(168,85,247,.35), transparent 60%), radial-gradient(800px 500px at -10% 40%, rgba(59,130,246,.25), transparent 60%), #0a0a18; }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 0 22px; } header { padding: 22px 0; display: flex; justify-content: space-between; align-items: center; }
+  .logo { display: inline-grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; font-weight: 800; background: linear-gradient(135deg, var(--a), var(--b)); margin-right: 10px; }
+  a { color: #a5b4fc; } h1 { font-size: clamp(32px, 6vw, 54px); line-height: 1.1; margin: 40px 0 14px; } .sub { font-size: 18px; color: #b4b7d6; max-width: 640px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 12px; margin: 26px 0 8px; }
+  .btn { padding: 13px 26px; border-radius: 14px; color: #fff; text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.06); }
+  .btn.main { background: linear-gradient(135deg, var(--a), var(--b)); border: 0; box-shadow: 0 10px 30px rgba(139,92,246,.4); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; margin: 40px 0; }
+  .card { padding: 18px; border-radius: 16px; background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09); } .card h3 { margin: 0 0 6px; font-size: 16px; }
+  .card p { margin: 0; color: #b4b7d6; font-size: 14px; } h2 { margin: 46px 0 12px; } code, pre { background: rgba(255,255,255,.08); border-radius: 8px; font-size: 13.5px; }
+  code { padding: 1px 6px; } pre { padding: 14px; overflow-x: auto; } details { background: rgba(255,255,255,.05); border: 1px solid rgba(255,255,255,.09); border-radius: 12px; padding: 12px 16px; margin: 10px 0; }
+  summary { cursor: pointer; font-weight: 600; } .note { font-size: 13px; color: #8d90b4; } footer { padding: 36px 0 50px; color: #8d90b4; font-size: 13px; }
+</style>
+</head>
+<body><div class="wrap">
+<header><div style="display:flex;align-items:center"><span class="logo">DI</span><b>DIVINE IDM</b></div><a id="repoLink" href="#">View on GitHub →</a></header>
+
+<h1>Download <span style="background:linear-gradient(90deg,#818cf8,#e879f9);-webkit-background-clip:text;background-clip:text;color:transparent">anything, faster.</span></h1>
+<p class="sub">A free, open-source download manager with a modern interface. Videos, music, image galleries and ordinary files. It runs on <b>your own computer</b>, so your downloads land in your own Downloads folder.</p>
+
+<div class="btns">
+  <a class="btn main" id="dlWin" href="#">⬇ Download for Windows</a>
+  <a class="btn" id="dlMac" href="#">macOS</a>
+  <a class="btn" id="dlLinux" href="#">Linux</a>
+</div>
+<p class="note">Unzip, then double-click <b>DIVINE-IDM</b>. Your browser opens the app automatically. Windows may show a "SmartScreen" notice because the app isn't code-signed: choose <i>More info → Run anyway</i>.</p>
+
+<div class="grid">
+  <div class="card"><h3>⚡ Multi-threaded engine</h3><p>Splits files into up to 16 parallel connections, with pause and resume that survives restarts.</p></div>
+  <div class="card"><h3>🎬 Video &amp; music sites</h3><p>yt-dlp with automatic fallback to PyTube, You-Get, Lux and gallery-dl. Pick the quality: 144p to 4K, MP3 or M4A.</p></div>
+  <div class="card"><h3>📱 Phone friendly</h3><p>Converts to H.264/AAC MP4 when needed so Gallery and WhatsApp can play it, and can send files to your phone over Wi-Fi.</p></div>
+  <div class="card"><h3>🖼️ Image galleries</h3><p>Grab a whole gallery into one folder with a single link.</p></div>
+  <div class="card"><h3>🗂️ Familiar layout</h3><p>Category sidebar, list and card views, search, right-click menu, disk-space gauge.</p></div>
+  <div class="card"><h3>🛠️ Network doctor</h3><p>Detects dead proxies and blocked connections and tells you how to fix them.</p></div>
+</div>
+
+<h2>Run from source (developers)</h2>
+<pre>git clone <span id="cloneUrl">https://github.com/YOU/REPO.git</span>
+cd REPO
+python -m venv venv
+venv\Scripts\activate        # macOS/Linux: source venv/bin/activate
+python -m pip install -r requirements.txt
+python app.py</pre>
+
+<h2>Questions</h2>
+<details><summary>Can I use it online, straight from this website?</summary><p>No, and that is by design. This page is only a free static website, and websites can't save files into your Downloads folder, open your folders or use your ffmpeg. The app has to run on your computer. <code>127.0.0.1</code> always means "this computer", so the app's address (<code>http://127.0.0.1:5001</code>) only exists on a machine where DIVINE IDM is running.</p></details>
+<details><summary>Do I need a terminal?</summary><p>Not with the downloads above: just double-click. The terminal steps are only for people running from source.</p></details>
+<details><summary>Is it legal?</summary><p>The software is. What you download is your responsibility: only download content you own or have permission to download, and respect each site's terms.</p></details>
+
+<footer>MIT licensed. Built with Flask, yt-dlp, gallery-dl, You-Get, PyTube(fix) and ffmpeg.</footer>
+</div>
+<script>
+  // Works on  https://USER.github.io/REPO/  automatically: finds the repository from the address.
+  const host = location.hostname, parts = location.pathname.split('/').filter(Boolean);
+  if (host.endsWith('.github.io')) {
+    const owner = host.replace('.github.io', ''), repo = parts[0] || owner + '.github.io', base = `https://github.com/${owner}/${repo}`;
+    document.getElementById('repoLink').href = base; document.getElementById('cloneUrl').textContent = base + '.git';
+    const rel = n => `${base}/releases/latest/download/${n}`;
+    document.getElementById('dlWin').href = rel('DIVINE-IDM-Windows.zip'); document.getElementById('dlMac').href = rel('DIVINE-IDM-macOS.zip'); document.getElementById('dlLinux').href = rel('DIVINE-IDM-Linux.zip');
+  }
+</script>
+</body></html>
