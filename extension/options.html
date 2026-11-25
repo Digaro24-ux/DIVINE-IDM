@@ -1,0 +1,11 @@
+<!doctype html><meta charset="utf-8"><title>DIVINE IDM options</title>
+<style>body{font:15px system-ui;max-width:520px;margin:40px auto;background:#0b0a12;color:#ece9f7}
+input{width:100%;padding:8px;margin:4px 0 14px;background:#1b1829;color:#ece9f7;border:1px solid #2a2640;border-radius:8px}
+button{padding:9px 18px;border:0;border-radius:8px;background:#f5c76b;font-weight:700;cursor:pointer}</style>
+<h2 style="color:#f5c76b;letter-spacing:.15em">DIVINE IDM</h2>
+<label>Server URL<input id="server"></label>
+<label>Token (printed by server.py and shown in the app under "Browser integration")<input id="token"></label>
+<label>Don't take over downloads smaller than (MB)<input id="min" type="number" min="0"></label>
+<label><input type="checkbox" id="intercept" style="width:auto"> Take over browser downloads</label><br><br>
+<button id="save">Save</button> <span id="ok"></span>
+<script src="options.js"></script>

@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DIVINE IDM</title>
+<meta name="theme-color" content="#0b0a12">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<style>
+:root{
+  --bg:#0b0a12; --panel:#14121f; --panel2:#1b1829; --line:#2a2640; --text:#ece9f7; --mute:#8f8aa8;
+  --gold:#f5c76b; --gold2:#e8a93a; --violet:#8b5cf6; --ok:#34d399; --warn:#fbbf24; --bad:#f87171; --blue:#60a5fa;
+  --r:14px;
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#f6f4fb;--panel:#fff;--panel2:#f0edf9;--line:#ddd8ee;--text:#1d1830;--mute:#6b6585;--gold:#8a5a00;--gold2:#b07400;--ok:#047857;--bad:#b91c1c;--warn:#92400e;--blue:#1d4ed8}
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:radial-gradient(1200px 500px at 50% -10%,rgba(139,92,246,.18),transparent 60%),var(--bg);
+  color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+.wrap{max-width:1040px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px}
+.logo{display:flex;align-items:center;gap:12px}
+.halo{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;
+  background:conic-gradient(from 200deg,var(--gold),var(--violet),var(--gold));box-shadow:0 0 28px rgba(245,199,107,.35)}
+.halo svg{width:22px;height:22px;fill:#0b0a12}
+h1{font-size:22px;letter-spacing:.22em;margin:0;font-weight:800;
+  background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--mute);font-size:12px;letter-spacing:.08em}
+.spacer{flex:1}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12px;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--mute);background:var(--panel)}
+.chip.on{color:var(--ok);border-color:rgba(52,211,153,.4)}
+.chip.off{color:var(--warn);border-color:rgba(251,191,36,.4);cursor:help}
+button,.btn{font:inherit;cursor:pointer;border:1px solid var(--line);background:var(--panel2);color:var(--text);
+  padding:8px 14px;border-radius:10px;transition:.15s}
+button:hover{border-color:var(--gold)}
+button.primary{background:linear-gradient(135deg,#f5c76b,#e8a93a);color:#1b1200;border:0;font-weight:700}
+button.primary:hover{filter:brightness(1.08)}
+button.icon{padding:6px 10px;font-size:13px}
+button.danger:hover{border-color:var(--bad);color:var(--bad)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:16px}
+.add textarea{width:100%;min-height:74px;resize:vertical;background:var(--panel2);color:var(--text);
+  border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:14px ui-monospace,Menlo,Consolas,monospace}
+.add textarea:focus,input:focus,select:focus{outline:2px solid var(--violet);outline-offset:1px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+label.f{display:flex;flex-direction:column;gap:4px;font-size:12px;color:var(--mute)}
+input[type=text],input[type=number],select{background:var(--panel2);color:var(--text);border:1px solid var(--line);
+  border-radius:8px;padding:7px 10px;font:inherit}
+input[type=range]{accent-color:var(--gold)}
+.info{margin-top:10px;padding:10px 12px;border:1px dashed var(--line);border-radius:10px;font-size:13px;color:var(--mute);display:none}
+.info b{color:var(--text)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:16px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.stat small{color:var(--mute);display:block;font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.stat span{font-size:20px;font-weight:700}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.tabs{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:3px}
+.tabs button{border:0;background:transparent;padding:5px 12px;border-radius:7px;color:var(--mute)}
+.tabs button.act{background:var(--panel2);color:var(--gold)}
+.dl{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-bottom:10px}
+.dl .top{display:flex;gap:10px;align-items:center}
+.kind{font-size:11px;padding:2px 8px;border-radius:6px;font-weight:700;letter-spacing:.05em;flex:none}
+.kind.direct{background:rgba(96,165,250,.15);color:var(--blue)}
+.kind.torrent{background:rgba(52,211,153,.15);color:var(--ok)}
+.kind.media{background:rgba(245,199,107,.15);color:var(--gold)}
+.name{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.bar{height:8px;background:var(--panel2);border-radius:99px;overflow:hidden;margin:10px 0 6px}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--violet),var(--gold));transition:width .4s}
+.dl.done .bar i{background:var(--ok)}
+.dl.error .bar i{background:var(--bad)}
+.dl.paused .bar i{background:var(--mute)}
+.meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--mute);font-size:12px}
+.meta .st{font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.st.running,.st.starting{color:var(--gold)}.st.done{color:var(--ok)}.st.error{color:var(--bad)}.st.paused,.st.queued{color:var(--mute)}
+.acts{display:flex;gap:6px;flex:none}
+.err{color:var(--bad);font-size:12px;margin-top:4px;word-break:break-word}
+.empty{text-align:center;color:var(--mute);padding:34px 10px;border:1px dashed var(--line);border-radius:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}
+.feat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.feat b{display:block;margin-bottom:2px}
+.feat span{color:var(--mute);font-size:13px}
+h2{font-size:15px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin:0 0 12px}
+code,pre{font:12.5px ui-monospace,Menlo,Consolas,monospace;background:var(--panel2);border-radius:6px;padding:2px 6px}
+pre{padding:10px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+a{color:var(--gold)}
+footer{color:var(--mute);font-size:12px;text-align:center;margin-top:30px}
+dialog{background:var(--panel);color:var(--text);border:1px solid var(--line);border-radius:var(--r);padding:20px;max-width:440px;width:92%}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:var(--panel2);border:1px solid var(--gold);
+  padding:10px 16px;border-radius:10px;z-index:9;display:none;max-width:90vw}
+.toast.bad{border-color:var(--bad)}
+@media(max-width:560px){.dl .top{flex-wrap:wrap}.acts{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <div class="halo"><svg viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 1 1v9.6l3.3-3.3a1 1 0 1 1 1.4 1.4l-5 5a1 1 0 0 1-1.4 0l-5-5a1 1 0 1 1 1.4-1.4L11 13.6V4a1 1 0 0 1 1-1ZM5 19a1 1 0 1 1 0-2h14a1 1 0 1 1 0 2H5Z"/></svg></div>
+      <div><h1>DIVINE IDM</h1><div class="sub">FAST · FREE · OPEN SOURCE DOWNLOAD MANAGER</div></div>
+    </div>
+    <div class="spacer"></div>
+    <div class="chips" id="chips"></div>
+    <button class="icon" id="btnSettings">⚙ Settings</button>
+  </header>
+
+  <section class="card add">
+    <textarea id="urls" spellcheck="false" placeholder="Paste links here — one per line&#10;https://example.com/file.zip&#10;ftp://server/path/file.iso&#10;magnet:?xt=urn:btih:…&#10;https://www.youtube.com/watch?v=…   https://www.bilibili.com/video/BV…"></textarea>
+    <div class="row">
+      <label class="f">Type
+        <select id="kind"><option value="auto">Auto-detect</option><option value="direct">Direct (HTTP/FTP)</option>
+          <option value="media">Video site</option><option value="torrent">Torrent / magnet</option></select></label>
+      <label class="f" id="qWrap" style="display:none">Video quality
+        <select id="quality"><option value="best">Best</option><option value="2160">4K (2160p)</option><option value="1440">1440p</option>
+          <option value="1080">1080p</option><option value="720">720p</option><option value="480">480p</option><option value="audio">Audio only (MP3)</option></select></label>
+      <label class="f" id="cWrap">Connections: <b id="cVal">8</b>
+        <input type="range" id="conns" min="1" max="32" value="8"></label>
+      <label class="f" style="flex:1;min-width:180px">Save to (on the machine running DIVINE IDM)
+        <input type="text" id="dir"></label>
+      <button class="primary" id="btnAdd" style="align-self:flex-end">⬇ Download</button>
+    </div>
+    <div class="info" id="info"></div>
+  </section>
+
+  <div class="stats">
+    <div class="stat"><small>Speed</small><span id="sSpeed">0 B/s</span></div>
+    <div class="stat"><small>Active</small><span id="sActive">0</span></div>
+    <div class="stat"><small>Completed</small><span id="sDone">0</span></div>
+    <div class="stat"><small>Total</small><span id="sTotal">0</span></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="tabs" id="tabs">
+      <button data-f="all" class="act">All</button><button data-f="active">Active</button>
+      <button data-f="paused">Paused</button><button data-f="done">Done</button><button data-f="error">Failed</button>
+    </div>
+    <input type="text" id="search" placeholder="Search…" style="flex:1;min-width:120px">
+    <button class="icon" id="pauseAll">⏸ Pause all</button>
+    <button class="icon" id="resumeAll">▶ Resume all</button>
+    <button class="icon danger" id="clearDone">🧹 Clear done</button>
+  </div>
+  <div id="list"></div>
+
+  <section class="card">
+    <h2>Everything in one place</h2>
+    <div class="grid">
+      <div class="feat"><b>⚡ Multi-connection downloads</b><span>Files are split into up to 32 segments fetched in parallel, with automatic retries.</span></div>
+      <div class="feat"><b>⏯ Pause &amp; resume</b><span>Progress is saved to disk, so downloads survive restarts and network drops.</span></div>
+      <div class="feat"><b>🌐 HTTP · HTTPS · FTP</b><span>Direct links with resumable segments; FTP resumes from the last byte.</span></div>
+      <div class="feat"><b>🧲 Torrents &amp; magnets</b><span>Magnet links and .torrent files through libtorrent.</span></div>
+      <div class="feat"><b>▶ YouTube &amp; Bilibili</b><span>Plus Vimeo, X, TikTok, SoundCloud and more via yt-dlp. Pick quality or extract MP3.</span></div>
+      <div class="feat"><b>🧩 Browser integration</b><span>Chrome/Edge/Firefox extension, right-click menu, and a bookmarklet.</span></div>
+      <div class="feat"><b>💻 Every platform</b><span>Windows, macOS, Linux, and Android (Termux or any phone browser on your network). Installable as an app.</span></div>
+      <div class="feat"><b>🎛 Queue control</b><span>Limit how many downloads run at once; the rest wait their turn.</span></div>
+    </div>
+  </section>
+
+  <section class="card" id="integration">
+    <h2>Browser integration</h2>
+    <p style="margin-top:0">Install the extension from the <code>extension/</code> folder (see README), then paste this token into its options:</p>
+    <pre id="tokenBox"></pre>
+    <p>No extension? Drag this bookmarklet to your bookmarks bar, then click it on any page to send that page's URL here:</p>
+    <p><a id="bookmarklet" class="btn" style="display:inline-block;text-decoration:none;color:var(--gold)">➕ Send to DIVINE IDM</a></p>
+  </section>
+
+  <footer>DIVINE IDM · inspired by <a href="https://github.com/XiaoYouChR/Ghost-Downloader-3" target="_blank" rel="noopener">Ghost Downloader 3</a><br>Only download content you have the right to download.</footer>
+</div>
+
+<dialog id="dlgSettings">
+  <h2>Settings</h2>
+  <label class="f">Default save folder<input type="text" id="setDir"></label><br>
+  <label class="f">Default connections per download<input type="number" id="setConns" min="1" max="32"></label><br>
+  <label class="f">Max simultaneous downloads<input type="number" id="setActive" min="1" max="16"></label>
+  <div class="row" style="justify-content:flex-end"><button id="setCancel">Cancel</button><button class="primary" id="setSave">Save</button></div>
+</dialog>
+<div class="toast" id="toast"></div>
+
+<script>
+const TOKEN = "__TOKEN__";
+const $ = id => document.getElementById(id);
+let state = {jobs: [], config: {}, capabilities: {}};
+let filter = "all", query = "";
+
+async function api(path, body) {
+  const opt = {headers: {"X-Token": TOKEN}};
+  if (body !== undefined) { opt.method = "POST"; opt.body = JSON.stringify(body); opt.headers["Content-Type"] = "application/json"; }
+  const r = await fetch(path, opt);
+  const data = await r.json().catch(() => ({}));
+  if (!r.ok && !data.added) throw new Error(data.error || r.statusText);
+  return data;
+}
+function toast(msg, bad) {
+  const t = $("toast"); t.textContent = msg; t.className = "toast" + (bad ? " bad" : ""); t.style.display = "block";
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.style.display = "none", 4500);
+}
+function human(n) {
+  n = Number(n) || 0; const u = ["B","KB","MB","GB","TB"]; let i = 0;
+  while (n >= 1024 && i < 4) { n /= 1024; i++; }
+  return (i ? n.toFixed(2) : Math.round(n)) + " " + u[i];
+}
+function dur(s) {
+  if (s == null || !isFinite(s)) return "—"; s = Math.round(s);
+  const h = Math.floor(s/3600), m = Math.floor(s%3600/60), x = s%60;
+  return h ? `${h}h ${m}m` : m ? `${m}m ${x}s` : `${x}s`;
+}
+function detect(u) {
+  u = u.trim().toLowerCase();
+  if (u.startsWith("magnet:") || u.split("?")[0].endsWith(".torrent")) return "torrent";
+  try { const h = new URL(u).hostname;
+    if (/(^|\.)(youtube\.com|youtu\.be|bilibili\.com|b23\.tv|vimeo\.com|twitch\.tv|dailymotion\.com|soundcloud\.com|tiktok\.com|twitter\.com|x\.com|instagram\.com|facebook\.com|reddit\.com)$/.test(h)) return "media";
+  } catch (e) {}
+  return "direct";
+}
+function currentKind() {
+  const k = $("kind").value; if (k !== "auto") return k;
+  const first = $("urls").value.split(/\s+/).find(Boolean);
+  return first ? detect(first) : "direct";
+}
+function syncAddForm() {
+  const k = currentKind();
+  $("qWrap").style.display = k === "media" ? "" : "none";
+  $("cWrap").style.display = k === "direct" ? "" : "none";
+}
+
+/* ---------- list rendering (keyed, no flicker) ---------- */
+const rows = new Map();
+function makeRow(j) {
+  const el = document.createElement("div"); el.className = "dl";
+  el.innerHTML = `<div class="top"><span class="kind"></span><div class="name"></div>
+    <div class="acts"><button class="icon pr"></button><button class="icon sv" title="Save to this device">💾</button>
+    <button class="icon danger rm" title="Remove">✕</button></div></div>
+    <div class="bar"><i></i></div><div class="meta"></div><div class="err"></div>`;
+  el.querySelector(".pr").onclick = () => {
+    const j = rows.get(el.dataset.id).job;
+    const running = ["running","starting","queued"].includes(j.state);
+    act(j.id, running ? "pause" : "resume");
+  };
+  el.querySelector(".sv").onclick = () => { location.href = `/api/file/${el.dataset.id}?token=${encodeURIComponent(TOKEN)}`; };
+  el.querySelector(".rm").onclick = () => {
+    const j = rows.get(el.dataset.id).job;
+    const del = j.state === "done" ? confirm("Also delete the downloaded file from disk?\n\nOK = delete file too, Cancel = keep file (remove from list only)") : true;
+    api(`/api/jobs/${el.dataset.id}/remove`, {delete_files: del}).then(poll);
+  };
+  return el;
+}
+async function act(id, a) { try { await api(`/api/jobs/${id}/${a}`, {}); poll(); } catch (e) { toast(e.message, true); } }
+function matches(j) {
+  const s = j.state;
+  if (filter === "active" && !["running","starting","queued"].includes(s)) return false;
+  if (filter === "paused" && s !== "paused") return false;
+  if (filter === "done" && s !== "done") return false;
+  if (filter === "error" && s !== "error") return false;
+  return !query || (j.name + " " + j.url).toLowerCase().includes(query);
+}
+function render() {
+  const list = $("list"), seen = new Set();
+  const jobs = state.jobs.filter(matches);
+  for (const j of jobs) {
+    seen.add(j.id);
+    let r = rows.get(j.id);
+    if (!r) { const el = makeRow(j); el.dataset.id = j.id; r = {el, job: j}; rows.set(j.id, r); }
+    r.job = j;
+    const el = r.el;
+    el.className = "dl " + j.state;
+    const k = el.querySelector(".kind"); k.className = "kind " + j.kind;
+    k.textContent = {direct: "HTTP", torrent: "TORRENT", media: "VIDEO"}[j.kind];
+    if (j.kind === "direct" && j.url.startsWith("ftp")) k.textContent = "FTP";
+    const nm = el.querySelector(".name"); nm.textContent = j.name; nm.title = j.url;
+    const running = ["running","starting","queued"].includes(j.state);
+    const pr = el.querySelector(".pr");
+    pr.textContent = j.state === "done" ? "✓" : running ? "⏸ Pause" : "▶ Resume";
+    pr.disabled = j.state === "done";
+    el.querySelector(".sv").style.display = j.downloadable ? "" : "none";
+    el.querySelector(".bar i").style.width = (j.state === "done" ? 100 : j.percent) + "%";
+    const parts = [`<span class="st ${j.state}">${j.state}</span>`];
+    parts.push(j.total ? `${human(j.downloaded)} / ${human(j.total)} (${j.percent.toFixed(1)}%)` : human(j.downloaded));
+    if (j.state === "running") { parts.push(human(j.speed) + "/s"); parts.push("ETA " + dur(j.eta)); }
+    if (j.peers != null && j.state === "running") parts.push(j.peers + " peers");
+    if (j.connections) parts.push(j.connections + " conn");
+    if (j.quality) parts.push(j.quality === "audio" ? "MP3" : j.quality === "best" ? "best quality" : j.quality + "p");
+    el.querySelector(".meta").innerHTML = parts.join("<span>·</span>");
+    el.querySelector(".err").textContent = j.error || "";
+    list.appendChild(el);   // keeps order, moves only if needed
+  }
+  for (const [id, r] of rows) if (!seen.has(id)) { r.el.remove(); rows.delete(id); }
+  let empty = $("empty");
+  if (!jobs.length) {
+    if (!empty) { empty = document.createElement("div"); empty.id = "empty"; empty.className = "empty"; list.appendChild(empty); }
+    empty.textContent = state.jobs.length ? "No downloads match this filter." : "Nothing here yet — paste a link above to start. 🚀";
+  } else if (empty) empty.remove();
+
+  const all = state.jobs;
+  const act = all.filter(j => j.state === "running");
+  const sp = act.reduce((a, j) => a + (j.speed || 0), 0);
+  $("sSpeed").textContent = human(sp) + "/s";
+  $("sActive").textContent = act.length;
+  $("sDone").textContent = all.filter(j => j.state === "done").length;
+  $("sTotal").textContent = all.length;
+  document.title = sp > 0 ? `↓ ${human(sp)}/s · DIVINE IDM` : "DIVINE IDM";
+}
+function renderChips() {
+  const c = state.capabilities, el = $("chips"); el.innerHTML = "";
+  const add = (txt, on, hint) => { const s = document.createElement("span"); s.className = "chip " + (on ? "on" : "off");
+    s.textContent = (on ? "✓ " : "! ") + txt; if (!on) s.title = hint; el.appendChild(s); };
+  add("HTTP/FTP", true); add("Torrent", c.torrent, c.torrent_hint || ""); add("YouTube/Bilibili", c.media, c.media_hint || "");
+}
+async function poll() {
+  try {
+    state = await api("/api/state");
+    renderChips(); render();
+    document.body.classList.remove("offline");
+  } catch (e) { /* server restarting */ }
+}
+
+/* ---------- add ---------- */
+let probeT;
+$("urls").addEventListener("input", () => { syncAddForm(); clearTimeout(probeT); probeT = setTimeout(probe, 700); });
+$("kind").onchange = syncAddForm;
+$("conns").oninput = () => $("cVal").textContent = $("conns").value;
+async function probe() {
+  const lines = $("urls").value.split(/\s+/).filter(Boolean), info = $("info");
+  if (lines.length !== 1) { info.style.display = "none"; return; }
+  info.style.display = "block"; info.textContent = "Analyzing link…";
+  try {
+    const d = await api("/api/probe", {url: lines[0], kind: $("kind").value});
+    let h = `<b>${esc(d.title || "Unknown")}</b>`;
+    if (d.size) h += ` · ${human(d.size)}`;
+    if (d.resumable === true) h += " · ✓ resumable, multi-connection OK";
+    if (d.resumable === false) h += " · ⚠ server doesn't support ranges (single connection)";
+    if (d.uploader) h += ` · ${esc(d.uploader)}`;
+    if (d.duration) h += ` · ${dur(d.duration)}`;
+    if (d.heights && d.heights.length) h += ` · up to ${d.heights[0]}p`;
+    info.innerHTML = h;
+  } catch (e) { info.textContent = "Couldn't analyze: " + e.message; }
+}
+function esc(s) { return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+$("btnAdd").onclick = async () => {
+  const urls = $("urls").value.split(/\s+/).filter(Boolean);
+  if (!urls.length) return toast("Paste at least one link first.", true);
+  $("btnAdd").disabled = true;
+  try {
+    const r = await api("/api/add", {urls, kind: $("kind").value, dir: $("dir").value || undefined,
+      connections: +$("conns").value, quality: $("quality").value});
+    if (r.errors && r.errors.length) toast(r.errors[0].error, true); else toast(`Added ${r.added.length} download(s)`);
+    if (r.added.length) { $("urls").value = ""; $("info").style.display = "none"; }
+  } catch (e) { toast(e.message, true); }
+  $("btnAdd").disabled = false; poll();
+};
+document.addEventListener("paste", e => {
+  if (["TEXTAREA","INPUT"].includes(document.activeElement.tagName)) return;
+  const t = (e.clipboardData.getData("text") || "").trim();
+  if (/^(https?|ftp):\/\/|^magnet:/i.test(t)) { $("urls").value = t; syncAddForm(); probe(); toast("Link pasted — press Download"); }
+});
+document.addEventListener("dragover", e => e.preventDefault());
+document.addEventListener("drop", e => {
+  e.preventDefault();
+  const t = e.dataTransfer.getData("text/uri-list") || e.dataTransfer.getData("text");
+  if (t) { $("urls").value = t.trim(); syncAddForm(); probe(); }
+});
+
+/* ---------- toolbar, settings ---------- */
+$("tabs").onclick = e => { const b = e.target.closest("button"); if (!b) return; filter = b.dataset.f;
+  [...$("tabs").children].forEach(x => x.classList.toggle("act", x === b)); render(); };
+$("search").oninput = e => { query = e.target.value.toLowerCase(); render(); };
+$("pauseAll").onclick = () => api("/api/pause_all", {}).then(poll);
+$("resumeAll").onclick = () => api("/api/resume_all", {}).then(poll);
+$("clearDone").onclick = () => api("/api/clear_done", {}).then(poll);
+$("btnSettings").onclick = () => { const c = state.config;
+  $("setDir").value = c.download_dir || ""; $("setConns").value = c.connections; $("setActive").value = c.max_active;
+  $("dlgSettings").showModal(); };
+$("setCancel").onclick = () => $("dlgSettings").close();
+$("setSave").onclick = async () => {
+  try { await api("/api/settings", {download_dir: $("setDir").value, connections: +$("setConns").value, max_active: +$("setActive").value});
+    $("dlgSettings").close(); toast("Settings saved"); await poll(); initDefaults(); } catch (e) { toast(e.message, true); }
+};
+function initDefaults() {
+  const c = state.config; if (!c.download_dir) return;
+  $("dir").value = c.download_dir; $("dir").placeholder = c.download_dir;
+  $("conns").value = c.connections; $("cVal").textContent = c.connections;
+}
+
+/* ---------- integration helpers ---------- */
+$("tokenBox").textContent = `Server: ${location.origin}\nToken:  ${TOKEN}`;
+$("bookmarklet").href = `javascript:(()=>{fetch('${location.origin}/api/add?token=${TOKEN}',{method:'POST',mode:'no-cors',body:JSON.stringify({url:location.href})});alert('Sent to DIVINE IDM')})()`;
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("/sw.js").catch(() => {});
+
+(async () => { await poll(); initDefaults(); syncAddForm(); setInterval(poll, 800); })();
+</script>
+</body>
+</html>

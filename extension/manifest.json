@@ -1,0 +1,11 @@
+{
+  "manifest_version": 3,
+  "name": "DIVINE IDM Integration",
+  "version": "1.0",
+  "description": "Send downloads, links, videos and magnets to your local DIVINE IDM.",
+  "permissions": ["contextMenus", "downloads", "storage", "notifications"],
+  "host_permissions": ["http://127.0.0.1/*", "http://localhost/*"],
+  "background": { "service_worker": "background.js" },
+  "options_ui": { "page": "options.html", "open_in_tab": true },
+  "action": { "default_popup": "popup.html" }
+}

@@ -1,0 +1,8 @@
+# DIVINE IDM runs on the Python standard library alone.
+# These two are OPTIONAL and unlock extra features:
+
+# YouTube, Bilibili and 1000+ other video sites (also install ffmpeg for merging / MP3)
+yt-dlp
+
+# Torrents and magnet links
+libtorrent
